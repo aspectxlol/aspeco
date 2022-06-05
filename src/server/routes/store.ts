@@ -9,7 +9,7 @@ const router = Router()
 router.get('/', (req, res) => {
     const data_1 = new URLSearchParams();
     data_1.append('client_id', data.clientId);
-    data_1.append('client_secret', data.clientSecret);
+    data_1.append('client_secret', data.clientSecret!);
     data_1.append('grant_type', 'authorization_code');
     data_1.append('redirect_uri', `http://localhost:${data.port}/store`);
     data_1.append('scope', 'identify');

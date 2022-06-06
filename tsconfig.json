@@ -8,5 +8,13 @@
     "skipLibCheck": true,                          
     "rootDir": "src",
     "outDir": "dist"
-  }
+  },
+  "include": [
+    "./src/*",
+    "./src/server/*",
+    "./src/server/views/*"
+  ],
+  "exclude": [
+    "/node_modules"
+  ]
 }

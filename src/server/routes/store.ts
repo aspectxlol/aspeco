@@ -22,9 +22,9 @@ router.get('/', (req, res) => {
                 avatar = `https://cdn.discordapp.com/avatars/${response.data.id}/${response.data.avatar}.png`
             }
             else avatar = `https://cdn.discordapp.com/embed/avatars/${response.data.discriminator % 5}.png`
-            res.render('store', {user: response.data, avatar: avatar})
+            res.render('store.ejs', {user: response.data, avatar: avatar})
         }).catch(err => {
-            res.status(500).render('failed');
+            res.status(500).render('failed.ejs');
         });
     });
 })

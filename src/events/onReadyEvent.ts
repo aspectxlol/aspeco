@@ -6,6 +6,7 @@ import fs from 'fs'
 import '@colors/colors'
 import moment from 'moment'
 import app from "../server";
+import { commandFiles } from "../utils/file";
 
 export default async (client: Bot) => {
     console.clear()
@@ -17,18 +18,19 @@ export default async (client: Bot) => {
     console.log(''.blue + ``.bgBlue + ' '.blue.bgGreen + ` AspectxDev`.bgGreen.white + ''.green.bgRed + ` ${client.user?.username}`.bgRed.white + ''.red + `                                                                                                ` + ''.blue + `${moment().format('h:mm:ss a')}`.bgBlue.white + ''.blue)
 
     const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
-    const commandFiles = fs.readdirSync('./src/commands').filter(file => [".ts", ".js"].some((ext) => file.endsWith(ext)))
-
     for(const file of commandFiles) {
-        const command = await require(`../commands/${file}`)?.default
-        if(!command) {
-            return console.log(`                        (/)`.red + `${file} seems to be exporting incorrectly`)
-        }
+        // const command = await require(`../commands/${file}`)?.default
+        await (import(file)).then((module) => {
+            if(!module.default) {
+                return console.log(`                        (/)`.red + `${file} seems to be exporting incorrectly`)
+            }
+    
+            const data = module.default.data?.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
+            client.command.set(data.name, module.default)
+            commands.push(data)
+            console.log(`                       (/)`.green + `| Pushed ${file}`)
+        })
 
-        const data = command.data?.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
-        client.command.set(data.name, command)
-        commands.push(data)
-        console.log(`                       (/)`.green + `| Pushed ${file}`)
     }
 
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);

@@ -17,7 +17,7 @@ export default async (client: Bot) => {
     console.log(''.blue + ``.bgBlue + ' '.blue.bgGreen + ` AspectxDev`.bgGreen.white + ''.green.bgRed + ` ${client.user?.username}`.bgRed.white + ''.red + `                                                                                                ` + ''.blue + `${moment().format('h:mm:ss a')}`.bgBlue.white + ''.blue)
 
     const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
-    const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'))
+    const commandFiles = fs.readdirSync('./src/commands').filter(file => [".ts", ".js"].some((ext) => file.endsWith(ext)))
 
     for(const file of commandFiles) {
         const command = await require(`../commands/${file}`)?.default

@@ -15,8 +15,7 @@ const command: BotCommand = {
                 new MessageButton()
                     .setStyle('LINK')
                     .setLabel('Store URL')
-                    // .setURL(`http://localhost:3000/store/${id}`)
-                    .setURL(`http://localhost:3000/store`)
+                    .setURL(`${process.env.REDIRECT_URL}`)
             )
         
         return interaction.reply({components: [row]})
